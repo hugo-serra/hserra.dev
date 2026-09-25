@@ -1,0 +1,13 @@
+# Accepted gitleaks findings (security-gate / nightly repo-audit, nixos-config#9).
+# Reviewed 2026-09-25. One fingerprint per line: commit:file:rule:line.
+
+# Algolia DocSearch public search key in a commented-out template; Algolia's
+# own comment on the line: "Public API key: it is safe to commit it".
+09ba0550caea03a8c38bc4878d05838d2a57f999:data/siteMetadata.js:generic-api-key:78
+20704c9f75a3ad345ca65aec04d4a6e917709076:data/siteMetadata.js:generic-api-key:78
+9b9355baed09dfd14b7453ba620b1c15a50232e9:data/siteMetadata.js:generic-api-key:78
+fa1f552e8dbd4ac63c390dc56b7d333ee538ad91:data/siteMetadata.js:generic-api-key:85
+
+# Vendored Yarn release bundle; the match is minified code, not a credential.
+54ff8c7b48f897b6676728d5326091e8f1113ed0:.yarn/releases/yarn-3.6.1.cjs:generic-api-key:127
+b93589c78d9aa3dd0dc30543f79782e7d89a4b48:.yarn/releases/yarn-3.6.1.cjs:generic-api-key:127
