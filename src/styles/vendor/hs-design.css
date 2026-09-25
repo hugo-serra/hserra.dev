@@ -1,0 +1,2968 @@
+/* Vendored from hserra/design 5952170c2d4b9cafd9988fdbba87ee525ed84750 (5952170c2d4b9cafd9988fdbba87ee525ed84750) by scripts/vendor-design.sh.
+   Do not edit by hand: re-run the script to change version. */
+
+@import url('https://fonts.bunny.net/css?family=inter:300,400,500,600&display=swap');
+/* Personal Design System — single-file entry point */
+
+/* Pre-register the layer so the cascade order is explicit when all three
+   files are imported together. Individual file imports still work — the
+   layer is created on first encounter. */
+@layer ds;
+
+/* ==========================================================================
+   tokens.css — Personal Design System
+   CSS custom properties. Import once at app root.
+
+   Dark mode — two mechanisms, both supported:
+     1. Automatic: @media (prefers-color-scheme: dark)
+     2. Manual:    data-theme="dark" / data-theme="light" on <html>
+        Toggle with: document.documentElement.setAttribute('data-theme', 'dark')
+        Persist with: localStorage.setItem('theme', 'dark')
+
+   Cascade: all rules live in @layer ds so unlayered app styles always win.
+   To override a token: set the custom property outside any layer.
+   ========================================================================== */
+
+@layer ds {
+
+/* ==========================================================================
+   LIGHT MODE — default, and explicit override
+   ========================================================================== */
+
+:root,
+:root[data-theme="light"] {
+
+  color-scheme: light;
+
+  /* --------------------------------------------------------------------------
+     COLOR — Light mode
+     Strategy: committed teal primary, pure white ground, quiet indigo accent.
+     -------------------------------------------------------------------------- */
+
+  /* Surfaces */
+  --color-bg:            oklch(1.000 0.000   0);   /* #ffffff — pure white, no tint */
+  --color-surface:       oklch(0.970 0.005 210);   /* ~#f4f7f8 — panels, cards, inputs */
+  --color-surface-hover: oklch(0.930 0.007 210);   /* hover state on surface-colored items */
+  --color-border:        oklch(0.900 0.005 215);   /* ~#dde3e5 — dividers, input strokes */
+
+  /* Text */
+  --color-ink:           oklch(0.140 0.012 215);   /* ~#1a2224 — body text, ≥7:1 on bg */
+  --color-muted:         oklch(0.470 0.008 215);   /* ~#636f73 — secondary text, ≥4.5:1 on bg */
+
+  /* Brand — primary teal */
+  --color-primary:            oklch(0.500 0.140 208);   /* ~#007a96 — links, icons, borders, active states */
+  --color-primary-fill:       oklch(0.500 0.140 208);   /* filled buttons, pills */
+  --color-primary-fill-hover: oklch(0.440 0.140 208);   /* filled button hover — darker */
+  --color-primary-bg:         oklch(0.940 0.030 208);   /* tinted primary surface (edit btns, row highlights) */
+  --color-primary-bg-hover:   oklch(0.890 0.050 208);   /* deeper tinted primary hover */
+  --color-primary-ring:       oklch(0.500 0.140 208 / 0.15); /* input focus box-shadow */
+  --color-primary-text:       oklch(1.000 0.000   0);   /* white — text on primary-fill */
+
+  /* Brand — accent indigo */
+  --color-accent:        oklch(0.550 0.140 265);   /* ~#5265c2 — badges, status pills, tags */
+  --color-accent-text:   oklch(1.000 0.000   0);   /* white — text on accent-filled elements */
+
+  /* Semantic — danger/error */
+  --color-danger:            oklch(0.520 0.180 25);    /* ~#c94a2a — error text, delete actions */
+  --color-danger-bg:         oklch(0.960 0.020 25);    /* tinted danger surface */
+  --color-danger-bg-hover:   oklch(0.920 0.040 25);    /* danger hover */
+  --color-danger-ring:       oklch(0.520 0.180 25 / 0.15); /* error input focus box-shadow */
+
+
+  /* --------------------------------------------------------------------------
+     SPACING — 4px base unit
+     -------------------------------------------------------------------------- */
+
+  --space-px:   1px;
+  --space-0-5:  0.125rem;  /*  2px */
+  --space-1:    0.25rem;   /*  4px */
+  --space-1-5:  0.375rem;  /*  6px */
+  --space-2:    0.5rem;    /*  8px */
+  --space-2-5:  0.625rem;  /* 10px */
+  --space-3:    0.75rem;   /* 12px */
+  --space-4:    1rem;      /* 16px */
+  --space-5:    1.25rem;   /* 20px */
+  --space-6:    1.5rem;    /* 24px */
+  --space-8:    2rem;      /* 32px */
+  --space-10:   2.5rem;    /* 40px */
+  --space-12:   3rem;      /* 48px */
+  --space-16:   4rem;      /* 64px */
+  --space-20:   5rem;      /* 80px */
+  --space-24:   6rem;      /* 96px */
+  --space-32:   8rem;      /* 128px */
+
+
+  /* --------------------------------------------------------------------------
+     TYPOGRAPHY — Fixed rem scale (product/tool system; density consistency matters)
+     Family: Inter — single geometric sans, 300/400/500/600 weights only.
+     -------------------------------------------------------------------------- */
+
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, 'Cascadia Code', monospace;
+
+  /* Scale — ratio ~1.2 per step, appropriate for product UI density */
+  --text-xs:   0.75rem;    /* 12px — captions, metadata */
+  --text-sm:   0.875rem;   /* 14px — labels, badge text */
+  --text-base: 1rem;       /* 16px — body (default) */
+  --text-md:   1.125rem;   /* 18px — title */
+  --text-lg:   1.25rem;    /* 20px — section heading */
+  --text-xl:   1.5rem;     /* 24px — headline */
+  --text-2xl:  1.875rem;   /* 30px */
+  --text-3xl:  2.25rem;    /* 36px — display */
+  --text-4xl:  3rem;       /* 48px — display large */
+
+  /* Weights — three steps do all the work */
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+
+  /* Line heights */
+  --leading-tight:   1.05;  /* display headings */
+  --leading-snug:    1.2;   /* h1–h3 */
+  --leading-normal:  1.5;   /* h4–h6, labels */
+  --leading-relaxed: 1.6;   /* body prose */
+
+  /* Letter spacing */
+  --tracking-tight:  -0.02em;  /* display headings */
+  --tracking-normal:  0em;
+  --tracking-wide:    0.01em;  /* labels, badges */
+
+
+  /* --------------------------------------------------------------------------
+     BORDER RADIUS
+     -------------------------------------------------------------------------- */
+
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
+  --radius-full: 9999px;  /* pills, badges */
+
+
+  /* --------------------------------------------------------------------------
+     SHADOWS — minimal: overlay + dropdown only (Flat-By-Default Rule)
+     -------------------------------------------------------------------------- */
+
+  --shadow-dropdown: 0 4px 16px oklch(0 0 0 / 0.08), 0 1px 4px oklch(0 0 0 / 0.06);
+  --shadow-overlay:  0 8px 40px oklch(0 0 0 / 0.12), 0 2px 10px oklch(0 0 0 / 0.08);
+
+
+  /* --------------------------------------------------------------------------
+     MOTION — state changes only; no choreography
+     -------------------------------------------------------------------------- */
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.50, 1);   /* default for hover/focus */
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.30, 1);   /* opens, slides */
+  --ease-standard:  cubic-bezier(0.40, 0, 0.20, 1);   /* modal open/close */
+
+  --duration-fast:  100ms;   /* micro-feedback: hover, focus ring */
+  --duration-base:  150ms;   /* default state transitions */
+  --duration-slow:  250ms;   /* open/close: dropdowns, modals */
+
+
+  /* --------------------------------------------------------------------------
+     Z-INDEX — semantic scale
+     -------------------------------------------------------------------------- */
+
+  --z-dropdown:       100;
+  --z-sticky:         200;
+  --z-modal-backdrop: 300;
+  --z-modal:          400;
+  --z-toast:          500;
+  --z-tooltip:        600;
+
+
+  /* --------------------------------------------------------------------------
+     CONTAINER
+     -------------------------------------------------------------------------- */
+
+  --container-max:     1280px;
+  --container-padding: clamp(1rem, 5vw, 2rem);
+
+
+  /* --------------------------------------------------------------------------
+     BREAKPOINTS — reference values for JS; cannot be used in @media queries.
+     In CSS, write breakpoints directly: @media (min-width: 640px) { ... }
+     -------------------------------------------------------------------------- */
+
+  --bp-sm: 640px;   /* phone → tablet */
+  --bp-md: 768px;   /* mid-tablet */
+  --bp-lg: 1024px;  /* tablet → desktop */
+  --bp-xl: 1280px;  /* wide desktop */
+
+}
+
+
+/* ==========================================================================
+   DARK MODE — system preference
+   :root:not([data-theme="light"]) so an explicit light override wins.
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+
+    color-scheme: dark;
+
+    /* Surfaces */
+    --color-bg:            oklch(0.100 0.008 215);   /* ~#111618 — near-black, faint teal cast */
+    --color-surface:       oklch(0.160 0.008 215);   /* ~#1c2224 — panels, cards, inputs */
+    --color-surface-hover: oklch(0.210 0.008 215);   /* hover state on dark surface items */
+    --color-border:        oklch(0.220 0.006 215);   /* ~#2a3336 — dividers, input strokes */
+
+    /* Text */
+    --color-ink:           oklch(0.950 0.004 210);   /* ~#f0f4f5 — body text, ≥7:1 on dark bg */
+    --color-muted:         oklch(0.580 0.006 212);   /* ~#7f8f94 — secondary text, ≥4.5:1 on dark bg */
+
+    /* Brand — primary teal (split for dark mode) */
+    --color-primary:            oklch(0.600 0.150 208);          /* foreground: links, icons, borders */
+    --color-primary-fill:       oklch(0.440 0.140 208);          /* filled buttons (white text: ~5.7:1) */
+    --color-primary-fill-hover: oklch(0.500 0.140 208);          /* filled button hover — lighter */
+    --color-primary-bg:         oklch(0.440 0.140 208 / 0.18);   /* tinted primary surface */
+    --color-primary-bg-hover:   oklch(0.440 0.140 208 / 0.28);   /* deeper tinted primary hover */
+    --color-primary-ring:       oklch(0.600 0.150 208 / 0.20);   /* input focus box-shadow */
+    --color-primary-text:       oklch(1.000 0.000   0);
+
+    /* Brand — accent indigo */
+    --color-accent:        oklch(0.680 0.130 265);
+    --color-accent-text:   oklch(1.000 0.000   0);
+
+    /* Semantic — danger/error */
+    --color-danger:            oklch(0.650 0.180 25);
+    --color-danger-bg:         oklch(0.180 0.060 25);
+    --color-danger-bg-hover:   oklch(0.220 0.070 25);
+    --color-danger-ring:       oklch(0.650 0.180 25 / 0.20);
+
+    /* Shadows — more pronounced on dark backgrounds */
+    --shadow-dropdown: 0 4px 20px oklch(0 0 0 / 0.32), 0 1px 6px oklch(0 0 0 / 0.24);
+    --shadow-overlay:  0 8px 48px oklch(0 0 0 / 0.40), 0 2px 12px oklch(0 0 0 / 0.28);
+
+  }
+}
+
+
+/* ==========================================================================
+   DARK MODE — explicit user override (data-theme="dark")
+   Identical values to the @media block above.
+   ========================================================================== */
+
+:root[data-theme="dark"] {
+
+  color-scheme: dark;
+
+  --color-bg:            oklch(0.100 0.008 215);
+  --color-surface:       oklch(0.160 0.008 215);
+  --color-surface-hover: oklch(0.210 0.008 215);
+  --color-border:        oklch(0.220 0.006 215);
+
+  --color-ink:           oklch(0.950 0.004 210);
+  --color-muted:         oklch(0.580 0.006 212);
+
+  --color-primary:            oklch(0.600 0.150 208);
+  --color-primary-fill:       oklch(0.440 0.140 208);
+  --color-primary-fill-hover: oklch(0.500 0.140 208);
+  --color-primary-bg:         oklch(0.440 0.140 208 / 0.18);
+  --color-primary-bg-hover:   oklch(0.440 0.140 208 / 0.28);
+  --color-primary-ring:       oklch(0.600 0.150 208 / 0.20);
+  --color-primary-text:       oklch(1.000 0.000   0);
+
+  --color-accent:        oklch(0.680 0.130 265);
+  --color-accent-text:   oklch(1.000 0.000   0);
+
+  --color-danger:            oklch(0.650 0.180 25);
+  --color-danger-bg:         oklch(0.180 0.060 25);
+  --color-danger-bg-hover:   oklch(0.220 0.070 25);
+  --color-danger-ring:       oklch(0.650 0.180 25 / 0.20);
+
+  --shadow-dropdown: 0 4px 20px oklch(0 0 0 / 0.32), 0 1px 6px oklch(0 0 0 / 0.24);
+  --shadow-overlay:  0 8px 48px oklch(0 0 0 / 0.40), 0 2px 12px oklch(0 0 0 / 0.28);
+
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   base.css — Personal Design System
+   Minimal element defaults. Requires tokens.css to be loaded first.
+
+   Font loading: Inter via Bunny Fonts (GDPR-friendly, Google Fonts API-compatible).
+   Alternatives:
+     - Google Fonts:   https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap
+     - npm (Vite/Next): @fontsource/inter  — import '@fontsource/inter/300.css' etc.
+     - Self-hosted:    generate from https://gwfh.mranftl.com/fonts/inter
+   ========================================================================== */
+
+/* @import must stay outside @layer — browser processes @import before layers */
+
+@layer ds {
+
+/* --------------------------------------------------------------------------
+   Box model
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+/* --------------------------------------------------------------------------
+   Document
+   -------------------------------------------------------------------------- */
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* color-scheme is set per-theme in tokens.css via color-scheme property on :root;
+     this fallback ensures the browser's default chrome (scrollbars, inputs) matches */
+  color-scheme: light dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Body
+   -------------------------------------------------------------------------- */
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'calt' 1;
+}
+
+
+/* --------------------------------------------------------------------------
+   Headings
+   -------------------------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+  letter-spacing: var(--tracking-tight);
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+h4 {
+  font-size: var(--text-lg);
+}
+
+h5 {
+  font-size: var(--text-md);
+}
+
+h6 {
+  font-size: var(--text-base);
+}
+
+
+/* --------------------------------------------------------------------------
+   Prose
+   -------------------------------------------------------------------------- */
+
+p {
+  margin: 0;
+  max-width: 72ch;
+  text-wrap: pretty;
+}
+
+strong {
+  font-weight: var(--weight-semibold);
+}
+
+
+/* --------------------------------------------------------------------------
+   Links
+   -------------------------------------------------------------------------- */
+
+a {
+  color: var(--color-primary);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition:
+    color var(--duration-base) var(--ease-out-quart),
+    text-decoration-color var(--duration-base) var(--ease-out-quart);
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Focus
+   -------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+
+/* --------------------------------------------------------------------------
+   Interactive resets
+   -------------------------------------------------------------------------- */
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-sans);
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   Code
+   -------------------------------------------------------------------------- */
+
+code,
+kbd,
+samp {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background-color: var(--color-surface);
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  overflow-x: auto;
+  line-height: var(--leading-relaxed);
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   Media
+   -------------------------------------------------------------------------- */
+
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+
+/* --------------------------------------------------------------------------
+   Lists
+   -------------------------------------------------------------------------- */
+
+ul,
+ol {
+  padding-left: var(--space-6);
+  margin: 0;
+}
+
+li + li {
+  margin-top: var(--space-1);
+}
+
+
+/* --------------------------------------------------------------------------
+   Horizontal rule
+   -------------------------------------------------------------------------- */
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-8) 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+
+th,
+td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+}
+
+th {
+  font-weight: var(--weight-medium);
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+
+/* --------------------------------------------------------------------------
+   Selection
+   -------------------------------------------------------------------------- */
+
+::selection {
+  background-color: var(--color-primary-ring);
+  color: var(--color-ink);
+}
+
+
+/* --------------------------------------------------------------------------
+   Scrollbar (webkit — Chrome, Safari, Edge)
+   -------------------------------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-surface);
+}
+
+
+/* --------------------------------------------------------------------------
+   Layout utilities — the canonical patterns from DESIGN.md
+   -------------------------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page--centered {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* --------------------------------------------------------------------------
+   Reduced motion — last rule, maximum specificity via !important
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   components/index.css — Personal Design System
+   All components. Requires: tokens.css (and ideally base.css).
+
+   Components: button, badge, field (+ form-actions), gallery, lightbox, table, alert, card, empty, metric, nav, post-list, prose, reading-bar, skeleton, stat-list, theme-toggle, tile, timeline, toast
+
+   For granular imports, load individual files instead:
+     @import '@hs/design/components/button';
+     @import '@hs/design/components/badge';
+     …
+   ========================================================================== */
+
+/* ==========================================================================
+   button.css — Personal Design System
+   Requires: tokens.css
+
+   HTML:
+     <button class="btn btn-primary">Save changes</button>
+     <a href="/path" class="btn btn-ghost">Cancel</a>
+   ========================================================================== */
+
+@layer ds {
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1-5);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-out-quart),
+    color            var(--duration-fast) var(--ease-out-quart),
+    border-color     var(--duration-fast) var(--ease-out-quart),
+    box-shadow       var(--duration-fast) var(--ease-out-quart);
+
+  /* Mobile: 44px touch target */
+  min-height: 44px;
+}
+
+/* Desktop: compact */
+@media (min-width: 768px) {
+  .btn {
+    min-height: unset;
+    height: 2rem;
+  }
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Variant: primary (filled teal) ──────────────────────────────── */
+
+.btn-primary {
+  background-color: var(--color-primary-fill);
+  color: var(--color-primary-text);
+  border-color: var(--color-primary-fill);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-fill-hover);
+  border-color: var(--color-primary-fill-hover);
+}
+
+/* ── Variant: ghost (outlined) ───────────────────────────────────── */
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-muted);
+  border-color: var(--color-border);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  color: var(--color-ink);
+  background-color: var(--color-surface);
+}
+
+/* ── Variant: soft (tinted primary — for secondary/edit actions) ─── */
+
+.btn-soft {
+  background-color: var(--color-primary-bg);
+  color: var(--color-primary);
+  border-color: transparent;
+}
+
+.btn-soft:hover:not(:disabled) {
+  background-color: var(--color-primary-bg-hover);
+}
+
+/* ── Variant: danger (destructive action) ────────────────────────── */
+
+.btn-danger {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+  border-color: transparent;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--color-danger-bg-hover);
+}
+
+/* ── Size: small ─────────────────────────────────────────────────── */
+
+.btn-sm {
+  height: 1.5rem;
+  padding: 0 var(--space-2);
+  font-size: var(--text-xs);
+  min-height: unset;  /* touch target waived for small: use sparingly */
+}
+
+/* ── Size: large ─────────────────────────────────────────────────── */
+
+.btn-lg {
+  height: 2.75rem;
+  padding: 0 var(--space-6);
+  font-size: var(--text-base);
+  min-height: 44px;
+}
+
+/* ── Full width ──────────────────────────────────────────────────── */
+
+.btn-full {
+  width: 100%;
+}
+
+/* ── State: loading (async work in progress) ─────────────────────── */
+
+.btn--loading {
+  cursor: wait;
+  pointer-events: none;
+}
+
+/* Spinner prepended as a flex item before button text */
+.btn--loading::before {
+  content: '';
+  display: block;
+  flex-shrink: 0;
+  width: 0.8125em;
+  height: 0.8125em;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: btn-spin 0.65s linear infinite;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--loading::before {
+    animation: none;
+    border-style: dashed;
+    border-right-color: currentColor;
+  }
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   badge.css — Personal Design System
+   Requires: tokens.css
+
+   HTML:
+     <span class="badge badge-primary">Active</span>
+     <span class="badge badge-danger">Expired</span>
+   ========================================================================== */
+
+@layer ds {
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 1.25rem;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.badge-primary {
+  background-color: var(--color-primary-bg);
+  color: var(--color-primary);
+}
+
+.badge-accent {
+  background-color: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.badge-muted {
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+}
+
+.badge-danger {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   field.css — Personal Design System
+   Requires: tokens.css
+
+   HTML (valid):
+     <div class="field">
+       <label class="field-label" for="url">Destination URL</label>
+       <input class="field-input" id="url" type="url" placeholder="https://…">
+       <span class="field-hint">Must be a fully qualified URL.</span>
+     </div>
+
+   HTML (invalid):
+     <div class="field field--invalid">
+       <label class="field-label" for="slug">Slug</label>
+       <input class="field-input" id="slug" type="text" value="bad value" aria-describedby="slug-err">
+       <span class="field-error" id="slug-err" role="alert">Slug is already taken.</span>
+     </div>
+   ========================================================================== */
+
+@layer ds {
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+.field + .field {
+  margin-top: var(--space-4);
+}
+
+/* Label */
+.field-label {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-muted);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+/* Controls — input, textarea, select */
+.field-input,
+.field-textarea,
+.field-select {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  background-color: var(--color-surface);
+  outline: none;
+  min-height: 44px;
+  transition:
+    border-color var(--duration-fast) var(--ease-out-quart),
+    box-shadow   var(--duration-fast) var(--ease-out-quart);
+}
+
+@media (min-width: 768px) {
+  .field-input,
+  .field-textarea,
+  .field-select {
+    min-height: unset;
+    padding: var(--space-1-5) var(--space-2);
+  }
+}
+
+.field-input::placeholder,
+.field-textarea::placeholder {
+  color: var(--color-muted);
+}
+
+/* Focus */
+.field-input:focus,
+.field-textarea:focus,
+.field-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-ring);
+}
+
+/* Disabled */
+.field-input:disabled,
+.field-textarea:disabled,
+.field-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Invalid modifier */
+.field--invalid .field-input,
+.field--invalid .field-textarea,
+.field--invalid .field-select {
+  border-color: var(--color-danger);
+}
+
+.field--invalid .field-input:focus,
+.field--invalid .field-textarea:focus,
+.field--invalid .field-select:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px var(--color-danger-ring);
+}
+
+/* Textarea */
+.field-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: var(--leading-relaxed);
+}
+
+/* Hint */
+.field-hint {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  font-weight: var(--weight-light);
+  line-height: var(--leading-normal);
+}
+
+/* Error message */
+.field-error {
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
+/* Form actions row — button group at the bottom of a form */
+.form-actions {
+  display: flex;
+  gap: var(--space-2-5);
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: var(--space-6);
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   gallery.css — Personal Design System
+   Requires: tokens.css
+
+   Responsive photo grid for photography portfolios and image collections.
+   Photos are the content; this component gets out of the way.
+
+   Default aspect ratio: 3:2 (standard full-frame / APS-C output).
+
+   ── Below-image caption (default) ──────────────────────────────────
+   HTML:
+     <ul class="gallery" role="list">
+       <li>
+         <a class="gallery-item" href="/photos/douro">
+           <div class="gallery-frame">
+             <img class="gallery-img" src="douro.jpg" alt="Douro Valley at dusk">
+           </div>
+           <div class="gallery-caption">
+             <span class="gallery-title">Douro Valley</span>
+             <span class="gallery-meta">Porto · 2025</span>
+           </div>
+         </a>
+       </li>
+     </ul>
+
+   ── Overlay caption on hover ────────────────────────────────────────
+   Move .gallery-caption inside .gallery-frame and add --overlay modifier.
+   The scrim gradient is functional (ensures white text legibility over
+   any image), not decorative.
+
+   HTML:
+     <ul class="gallery" role="list">
+       <li>
+         <a class="gallery-item" href="/photos/douro">
+           <div class="gallery-frame gallery-frame--overlay">
+             <img class="gallery-img" src="douro.jpg" alt="Douro Valley at dusk">
+             <div class="gallery-caption">
+               <span class="gallery-title">Douro Valley</span>
+               <span class="gallery-meta">Porto · 2025</span>
+             </div>
+           </div>
+         </a>
+       </li>
+     </ul>
+
+   ── Album / gallery index ───────────────────────────────────────────
+   Fewer, larger covers with visible titles. Add --albums to the grid.
+
+   HTML:
+     <ul class="gallery gallery--albums" role="list">
+       <li>
+         <a class="gallery-item" href="/galleries/porto">
+           <div class="gallery-frame gallery-frame--overlay">
+             <img class="gallery-img" src="porto-cover.jpg" alt="Porto">
+             <div class="gallery-caption">
+               <span class="gallery-title">Porto</span>
+               <span class="gallery-meta">24 photos</span>
+             </div>
+           </div>
+         </a>
+       </li>
+     </ul>
+
+   ── Loading skeleton ────────────────────────────────────────────────
+   Add skeleton class directly to .gallery-frame while the image loads.
+   The aspect-ratio on .gallery-frame gives the skeleton the right shape.
+   Requires: skeleton.css
+
+   HTML:
+     <li>
+       <div class="gallery-item">
+         <div class="gallery-frame skeleton"></div>
+       </div>
+     </li>
+
+   ── Aspect ratio variants (add to .gallery) ─────────────────────────
+   .gallery--square     1:1   (social / abstract)
+   .gallery--portrait   2:3   (phone portraits, fashion)
+   .gallery--wide       16:9  (landscape crops, cinematic)
+   ========================================================================== */
+
+@layer ds {
+
+/* ── Grid ────────────────────────────────────────────────────────── */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Album index: fewer, larger covers, more breathing room */
+.gallery--albums {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-5);
+}
+
+/* Aspect ratio variants */
+.gallery--square   .gallery-frame { aspect-ratio: 1 / 1; }
+.gallery--portrait .gallery-frame { aspect-ratio: 2 / 3; }
+.gallery--wide     .gallery-frame { aspect-ratio: 16 / 9; }
+
+/* ── Item ────────────────────────────────────────────────────────── */
+
+.gallery-item {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.gallery-item:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-md);
+}
+
+/* ── Frame — aspect-ratio box ────────────────────────────────────── */
+
+.gallery-frame {
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface); /* visible while image loads */
+  position: relative;                     /* anchor for overlay caption */
+}
+
+/* ── Image ───────────────────────────────────────────────────────── */
+
+.gallery-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out-quart);
+}
+
+/* Subtle scale on hover — image stays within the frame (overflow: hidden) */
+.gallery-item:hover .gallery-img,
+.gallery-item:focus-visible .gallery-img {
+  transform: scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-img {
+    transition: none;
+  }
+}
+
+/* ── Below-image caption (default) ──────────────────────────────── */
+
+.gallery-caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  padding: var(--space-2) 0 var(--space-1);
+}
+
+.gallery-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink);
+  line-height: var(--leading-normal);
+}
+
+.gallery-meta {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-light);
+  color: var(--color-muted);
+  line-height: var(--leading-normal);
+}
+
+/* ── Overlay caption variant (.gallery-frame--overlay) ───────────── */
+/* Caption lives inside .gallery-frame; frame provides clipping. */
+
+.gallery-frame--overlay .gallery-caption {
+  position: absolute;
+  inset: auto 0 0;
+  padding: var(--space-10) var(--space-4) var(--space-3);
+  /* Functional scrim: ensures white labels are legible over any photo */
+  background: linear-gradient(
+    to top,
+    oklch(0 0 0 / 0.62) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: translateY(0.375rem);
+  transition:
+    opacity  var(--duration-base) var(--ease-out-quart),
+    transform var(--duration-base) var(--ease-out-quart);
+}
+
+.gallery-item:hover    .gallery-frame--overlay .gallery-caption,
+.gallery-item:focus-visible .gallery-frame--overlay .gallery-caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Overlay text: always white regardless of theme */
+.gallery-frame--overlay .gallery-title {
+  color: oklch(1.000 0.000 0);
+}
+
+.gallery-frame--overlay .gallery-meta {
+  color: oklch(1.000 0.000 0 / 0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-frame--overlay .gallery-caption {
+    transition: opacity var(--duration-fast) linear;
+    transform: none;
+  }
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   lightbox.css — Personal Design System
+   Requires: tokens.css
+
+   Full-screen photo viewer built on native <dialog>. The dialog provides
+   a free focus trap and Escape-key handling; this component adds the visual
+   design and motion.
+
+   Behavior is JavaScript-driven. See IMPLEMENTATION.md for reference JS.
+
+   HTML:
+     <!-- Place near </body>. One lightbox per page; JS populates it. -->
+     <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
+       <div class="lightbox-backdrop"></div>
+
+       <button class="lightbox-close" aria-label="Close photo">
+         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+           <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+         </svg>
+       </button>
+
+       <button class="lightbox-prev" aria-label="Previous photo">
+         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+           <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+         </svg>
+       </button>
+
+       <figure class="lightbox-figure">
+         <img class="lightbox-img" src="" alt="">
+         <figcaption class="lightbox-caption">
+           <div class="lightbox-caption-main">
+             <span class="lightbox-title"></span>
+             <span class="lightbox-meta"></span>
+           </div>
+           <span class="lightbox-counter" aria-live="polite"></span>
+         </figcaption>
+       </figure>
+
+       <button class="lightbox-next" aria-label="Next photo">
+         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+           <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+         </svg>
+       </button>
+     </dialog>
+
+   Gallery items: add data-lightbox to each <a class="gallery-item">.
+   Optional data attributes (fall back to DOM if absent):
+     data-lightbox-src    Full-resolution image URL (vs. thumbnail src)
+     data-lightbox-title  Override gallery-title text
+     data-lightbox-meta   Override gallery-meta text
+
+   Reference JS: see IMPLEMENTATION.md → Lightbox section.
+   ========================================================================== */
+
+@layer ds {
+
+/* ── Dialog shell ────────────────────────────────────────────────── */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: hidden;
+  z-index: var(--z-modal);
+}
+
+.lightbox:not([open]) {
+  display: none;
+}
+
+.lightbox[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* We control the background ourselves via .lightbox-backdrop */
+.lightbox::backdrop {
+  background: transparent;
+}
+
+/* ── Backdrop ────────────────────────────────────────────────────── */
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: oklch(0 0 0 / 0.95);
+  z-index: 0;
+  animation: lb-bg-in var(--duration-slow) var(--ease-out-expo) both;
+}
+
+.lightbox--closing .lightbox-backdrop {
+  animation: lb-bg-out var(--duration-base) ease-in both;
+}
+
+/* ── Controls (close, prev, next) ────────────────────────────────── */
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 50%;
+  background: oklch(1 0 0 / 0.10);
+  color: oklch(1 0 0);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  padding: 0;
+  transition: background var(--duration-fast) var(--ease-out-quart);
+  animation: lb-controls-in var(--duration-slow) var(--ease-out-expo) both;
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: oklch(1 0 0 / 0.22);
+}
+
+.lightbox-close:focus-visible,
+.lightbox-prev:focus-visible,
+.lightbox-next:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.lightbox--closing .lightbox-close,
+.lightbox--closing .lightbox-prev,
+.lightbox--closing .lightbox-next {
+  animation: lb-bg-out var(--duration-fast) ease-in both;
+}
+
+/* Positions */
+.lightbox-close { top: var(--space-4);  right: var(--space-4); }
+.lightbox-prev  { left: var(--space-4); top: 50%; transform: translateY(-50%); }
+.lightbox-next  { right: var(--space-4); top: 50%; transform: translateY(-50%); }
+
+/* ── Figure ──────────────────────────────────────────────────────── */
+
+.lightbox-figure {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  /*
+   * Horizontal padding keeps content clear of the prev/next buttons.
+   * 2.75rem button + var(--space-4) gap each side = 2.75rem + 1rem = 3.75rem per side.
+   * We round up to var(--space-16) (4rem) for visual breathing room.
+   */
+  padding-inline: var(--space-16);
+  max-width: 100%;
+}
+
+.lightbox--closing .lightbox-figure {
+  animation: lb-figure-out var(--duration-fast) ease-in both;
+}
+
+/* ── Image ───────────────────────────────────────────────────────── */
+
+.lightbox-img {
+  display: block;
+  max-width: 90dvw;
+  max-height: 80dvh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  animation: lb-img-in var(--duration-slow) var(--ease-out-expo) both;
+}
+
+/* Fade used when navigating between photos (added/removed by JS) */
+.lightbox-img--nav {
+  animation: lb-nav-in var(--duration-base) var(--ease-out-quart) both !important;
+}
+
+/* ── Caption ─────────────────────────────────────────────────────── */
+
+.lightbox-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  width: 100%;
+  padding-top: var(--space-3);
+  font-family: var(--font-sans);
+  overflow: hidden;
+}
+
+.lightbox-caption-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  min-width: 0;
+}
+
+.lightbox-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: oklch(1 0 0 / 0.90);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lightbox-meta {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-light);
+  color: oklch(1 0 0 / 0.50);
+}
+
+.lightbox-counter {
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-light);
+  color: oklch(1 0 0 / 0.40);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Keyframes ───────────────────────────────────────────────────── */
+
+@keyframes lb-bg-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes lb-bg-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes lb-img-in {
+  from { transform: scale(0.96); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+@keyframes lb-figure-out {
+  from { transform: scale(1);    opacity: 1; }
+  to   { transform: scale(0.97); opacity: 0; }
+}
+
+@keyframes lb-controls-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes lb-nav-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-backdrop,
+  .lightbox-img,
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    animation: lb-bg-in var(--duration-fast) linear both !important;
+  }
+
+  .lightbox-img--nav {
+    animation: lb-bg-in var(--duration-fast) linear both !important;
+  }
+
+  .lightbox--closing .lightbox-backdrop,
+  .lightbox--closing .lightbox-figure,
+  .lightbox--closing .lightbox-close,
+  .lightbox--closing .lightbox-prev,
+  .lightbox--closing .lightbox-next {
+    animation: lb-bg-out var(--duration-fast) linear both !important;
+  }
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   table.css — Personal Design System
+   Requires: tokens.css
+
+   HTML:
+     <div class="tbl-wrap">
+       <table class="tbl">
+         <thead><tr><th>Slug</th><th class="tbl-r">Clicks</th></tr></thead>
+         <tbody>
+           <tr><td>…</td><td class="tbl-num">42</td></tr>
+         </tbody>
+       </table>
+     </div>
+   ========================================================================== */
+
+@layer ds {
+
+.tbl-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.tbl th {
+  padding: 0 var(--space-3) var(--space-2);
+  font-size: 10.5px;
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-muted);
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tbl th.tbl-r { text-align: right; }
+
+.tbl td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+  color: var(--color-ink);
+}
+
+.tbl tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tbl tbody tr:hover td {
+  background-color: var(--color-surface);
+}
+
+/* Numeric cells */
+.tbl-num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--color-ink);
+}
+
+/* Muted / metadata cells */
+.tbl-muted {
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+/* Mono cells (slugs, IDs, codes) */
+.tbl-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+
+/* Danger cells */
+.tbl-danger {
+  color: var(--color-danger);
+  font-weight: var(--weight-semibold);
+}
+
+/* Actions cell — right-aligned, no wrapping */
+.tbl-actions {
+  display: flex;
+  gap: var(--space-1-5);
+  align-items: center;
+  white-space: nowrap;
+  justify-content: flex-end;
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   alert.css — Personal Design System
+   Requires: tokens.css
+
+   HTML (simple):
+     <div class="alert alert-danger" role="alert">Incorrect password.</div>
+     <div class="alert alert-info">3 links expire this week.</div>
+
+   HTML (structured — title + description + optional action):
+     <div class="alert alert-danger" role="alert">
+       <div class="alert-body">
+         <span class="alert-title">Failed to save</span>
+         <span class="alert-desc">Check your connection and try again.</span>
+       </div>
+       <button class="btn btn-sm btn-ghost alert-action" onclick="retry()">Retry</button>
+     </div>
+   ========================================================================== */
+
+@layer ds {
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.alert-danger {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.alert-info {
+  background-color: var(--color-primary-bg);
+  color: var(--color-primary);
+}
+
+/* Structured body — takes remaining width */
+.alert-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+}
+
+.alert-title {
+  font-weight: var(--weight-semibold);
+}
+
+.alert-desc {
+  font-weight: var(--weight-light);
+}
+
+/* Optional action (retry, dismiss) — vertically centered at right */
+.alert-action {
+  flex-shrink: 0;
+  align-self: center;
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   card.css — Personal Design System
+   Requires: tokens.css
+
+   Legitimate uses: login panel, settings section, modal content area.
+   Not for repeating grids.
+
+   HTML:
+     <div class="card">…</div>
+   ========================================================================== */
+
+@layer ds {
+
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  /* Equal-height rule: when cards share a row (flex/grid), they match height.
+     min-height (not height) keeps `height: auto` so flex/grid stretch still
+     applies; it's ignored in normal block flow, so a standalone card is
+     unaffected, and it fills a stretched wrapper that stretch can't reach. */
+  min-height: 100%;
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   empty.css — Personal Design System
+   Requires: tokens.css
+
+   Teach the interface; don't just say "nothing here."
+
+   HTML (simple):
+     <div class="empty">
+       <p>No links yet. <a href="/new">Create your first one.</a></p>
+     </div>
+
+   HTML (structured — title + description + action):
+     <div class="empty">
+       <p class="empty-title">No links yet</p>
+       <p class="empty-desc">Create a short link to get started.</p>
+       <div class="empty-actions">
+         <a class="btn btn-primary" href="/new">Create a link</a>
+       </div>
+     </div>
+
+   HTML (error variant — failed state with retry):
+     <div class="empty empty--error">
+       <p class="empty-title">Couldn't load links</p>
+       <p class="empty-desc">Check your connection and try again.</p>
+       <div class="empty-actions">
+         <button class="btn btn-ghost" onclick="retry()">Try again</button>
+       </div>
+     </div>
+   ========================================================================== */
+
+@layer ds {
+
+.empty {
+  padding: var(--space-12) 0;
+  text-align: center;
+  color: var(--color-muted);
+  font-weight: var(--weight-light);
+  font-size: var(--text-sm);
+}
+
+.empty p,
+.empty-desc {
+  max-width: 36ch;
+  margin-inline: auto;
+}
+
+/* Structured sub-elements */
+.empty-title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink);
+  max-width: 32ch;
+  margin-inline: auto;
+  margin-bottom: var(--space-2);
+}
+
+.empty-desc {
+  margin-bottom: var(--space-5);
+}
+
+.empty-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+/* Error variant — failed state */
+.empty--error .empty-title {
+  color: var(--color-danger);
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   metric.css — Personal Design System
+   Requires: tokens.css
+
+   Semantic display for numeric and live data values: counts, rates, stats,
+   uptime scores, temperatures. Primary teal color signals "live, current data"
+   and gives the primary color meaningful presence on data-dense screens.
+
+   HTML:
+     <span class="metric">42</span>
+     <span class="metric metric-sm">98<span class="metric-unit">%</span></span>
+     <span class="metric metric--warn">3<span class="metric-sep">/</span>5</span>
+
+   Size modifiers: metric-sm (text-base), metric-lg (text-2xl)
+   State modifiers: metric--warn (danger color)
+   Sub-elements: metric-sep (separator between compound values), metric-unit
+   ========================================================================== */
+
+@layer ds {
+
+/* Default: large display value — headline metric, uptime count, temperature */
+.metric {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--leading-tight);
+}
+
+/* Compact: for dense stat grids (CPU %, disk usage, small counters) */
+.metric-sm {
+  font-size: var(--text-sm);
+}
+
+/* Display: for hero numbers, dashboard totals */
+.metric-lg {
+  font-size: var(--text-2xl);
+}
+
+/* State: value is out of a healthy range */
+.metric--warn {
+  color: var(--color-danger);
+}
+
+/* Separator between compound values — e.g. "3 / 5", "42 : 00" */
+.metric-sep {
+  font-weight: var(--weight-light);
+  color: var(--color-muted);
+  margin-inline: 1px;
+}
+
+/* Unit label after a value — e.g. "°C", "%", "GB", "ms" */
+.metric-unit {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  color: var(--color-muted);
+  margin-left: 1px;
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   nav.css — Personal Design System
+   Requires: tokens.css
+
+   App shell top bar: brand, optional subtitle, right-aligned slot.
+
+   HTML:
+     <header class="nav">
+       <a class="nav-brand" href="/">AppName</a>
+       <span class="nav-sep">·</span>
+       <span class="nav-sub">Admin</span>
+       <div class="nav-right">
+         <!-- theme toggle, user menu, actions -->
+       </div>
+     </header>
+
+   Minimal: brand only
+     <header class="nav">
+       <a class="nav-brand" href="/">AppName</a>
+     </header>
+   ========================================================================== */
+
+@layer ds {
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-inline: var(--container-padding);
+  border-bottom: 1px solid var(--color-border);
+  min-height: 48px;
+}
+
+.nav-brand {
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+  letter-spacing: var(--tracking-tight);
+  text-decoration: none;
+  transition: opacity var(--duration-fast) var(--ease-out-quart);
+}
+
+.nav-brand:hover {
+  opacity: 0.8;
+}
+
+.nav-sep {
+  color: var(--color-border);
+  user-select: none;
+}
+
+.nav-sub {
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-light);
+}
+
+/* Pushes everything after it to the right */
+.nav-right {
+  display: flex;
+  gap: var(--space-1-5);
+  align-items: center;
+  margin-left: auto;
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   post-list.css — Personal Design System
+   Requires: tokens.css
+
+   Blog index list and post page header. Not a card grid — a reading list
+   where titles do the work.
+
+   HTML (blog index):
+     <ul class="post-list">
+       <li class="post-item">
+         <a class="post-item-link" href="/blog/my-post">
+           <div class="post-meta">
+             <time class="post-date" datetime="2026-06-04">Jun 4, 2026</time>
+             <span class="post-sep" aria-hidden="true">·</span>
+             <span class="post-read-time">5 min read</span>
+           </div>
+           <h2 class="post-title">Post Title Here</h2>
+           <p class="post-excerpt">One to two lines describing the post.</p>
+         </a>
+         <div class="post-tags">
+           <span class="badge badge-muted">astro</span>
+           <span class="badge badge-muted">web</span>
+         </div>
+       </li>
+       <li class="post-item">…</li>
+     </ul>
+
+   HTML (post page header — at top of article, above .prose):
+     <header class="post-header">
+       <h1 class="post-heading">The Full Post Title</h1>
+       <div class="post-meta">
+         <time class="post-date" datetime="2026-06-04">Jun 4, 2026</time>
+         <span class="post-sep" aria-hidden="true">·</span>
+         <span class="post-read-time">5 min read</span>
+       </div>
+       <div class="post-tags">
+         <span class="badge badge-muted">astro</span>
+       </div>
+     </header>
+   ========================================================================== */
+
+@layer ds {
+
+/* ── List container ──────────────────────────────────────────────── */
+
+.post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Post item ───────────────────────────────────────────────────── */
+
+.post-item {
+  padding-block: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.post-item:first-child {
+  padding-top: 0;
+}
+
+.post-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* ── Item link — wraps date, title, excerpt ──────────────────────── */
+
+.post-item-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.post-item-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+/* Title transitions to primary on hover */
+.post-item-link:hover .post-title {
+  color: var(--color-primary);
+}
+
+/* ── Post metadata row (date · read time) ────────────────────────── */
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--color-muted);
+  margin-bottom: var(--space-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.post-sep {
+  color: var(--color-border);
+}
+
+.post-date,
+.post-read-time {
+  color: var(--color-muted);
+}
+
+/* ── Post title ──────────────────────────────────────────────────── */
+
+.post-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+  transition: color var(--duration-fast) var(--ease-out-quart);
+  text-wrap: balance;
+}
+
+/* ── Post excerpt ────────────────────────────────────────────────── */
+
+.post-excerpt {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-light);
+  color: var(--color-muted);
+  line-height: var(--leading-relaxed);
+  margin: var(--space-1-5) 0 0;
+  max-width: none;  /* prose container controls width */
+}
+
+/* ── Tags row ────────────────────────────────────────────────────── */
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1-5);
+  margin-top: var(--space-3);
+}
+
+/* ── Post page header (above the article) ────────────────────────── */
+
+.post-header {
+  margin-bottom: var(--space-8);
+}
+
+.post-heading {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0 0 var(--space-4);
+  text-wrap: balance;
+}
+
+.post-header .post-meta {
+  margin-bottom: var(--space-3);
+}
+
+.post-header .post-tags {
+  margin-top: 0;
+}
+
+@media (min-width: 640px) {
+  .post-heading {
+    font-size: var(--text-4xl);
+  }
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   prose.css — Personal Design System
+   Requires: tokens.css
+
+   Scoping class for rendered Markdown and long-form content.
+   Adds vertical rhythm and measure to flowing editorial content
+   (blog posts, /about, resume narrative sections).
+
+   HTML:
+     <article class="prose">
+       <!-- rendered Markdown, Astro MDX output, etc. -->
+       <h1>Post Title</h1>
+       <p>Opening paragraph.</p>
+       <h2>A Section</h2>
+       <p>Body text.</p>
+       <blockquote><p>A quoted passage.</p></blockquote>
+       <pre><code>code here</code></pre>
+       <figure>
+         <img src="…" alt="…">
+         <figcaption>Caption text.</figcaption>
+       </figure>
+     </article>
+
+   Measure: controlled by --prose-measure (defaults 70ch).
+   Override per project: .prose { --prose-measure: 65ch; }
+
+   Note: base.css sets p { max-width: 72ch }. This component resets
+   that on p and delegates measure to the .prose container instead.
+   ========================================================================== */
+
+@layer ds {
+
+.prose {
+  max-width: var(--prose-measure, 70ch);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink);
+}
+
+/* Base vertical rhythm — all direct children separated by one step */
+.prose > * + * {
+  margin-top: var(--space-5);
+}
+
+/* First child never has leading margin */
+.prose > :first-child {
+  margin-top: 0;
+}
+
+/* Headings — larger section breaks */
+.prose > * + h2 {
+  margin-top: var(--space-12);
+}
+
+.prose > * + h3 {
+  margin-top: var(--space-8);
+}
+
+.prose > * + h4 {
+  margin-top: var(--space-6);
+}
+
+/* Tighten the gap immediately after a heading */
+.prose > h2 + *,
+.prose > h3 + *,
+.prose > h4 + * {
+  margin-top: var(--space-3);
+}
+
+/* Paragraph — container (.prose) controls measure; release the global p constraint */
+.prose p {
+  max-width: none;
+}
+
+/* Blockquote — tinted surface, no side-stripe */
+.prose blockquote {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+  color: var(--color-muted);
+  font-weight: var(--weight-light);
+}
+
+.prose blockquote > * + * {
+  margin-top: var(--space-3);
+}
+
+.prose blockquote > :first-child {
+  margin-top: 0;
+}
+
+/* Code blocks — breathing room above and below; styles from base.css */
+.prose > * + pre,
+.prose > * + .prose-code-block {
+  margin-top: var(--space-6);
+}
+
+.prose > pre + * {
+  margin-top: var(--space-6);
+}
+
+/* Lists — line height and inter-item spacing within prose flow */
+.prose ul,
+.prose ol {
+  line-height: var(--leading-relaxed);
+}
+
+.prose li + li {
+  margin-top: var(--space-2);
+}
+
+/* Nested list reset */
+.prose li > ul,
+.prose li > ol {
+  margin-top: var(--space-1-5);
+}
+
+/* Images */
+.prose img {
+  border-radius: var(--radius-lg);
+  width: 100%;
+}
+
+/* Figure / caption */
+.prose figure {
+  margin: 0;
+}
+
+.prose figcaption {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  text-align: center;
+  margin-top: var(--space-2);
+}
+
+/* Horizontal rule — already styled in base.css; ensure margin symmetry in prose */
+.prose > * + hr {
+  margin-top: var(--space-8);
+}
+
+.prose > hr + * {
+  margin-top: var(--space-8);
+}
+
+/* Strong / emphasis within prose */
+.prose strong {
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink);
+}
+
+/* Tables within prose — wrap in overflow for mobile */
+.prose table {
+  font-size: var(--text-sm);
+  width: 100%;
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   reading-bar.css — Personal Design System
+   Requires: tokens.css
+
+   Reading progress indicator. A thin fixed bar at the top of the viewport
+   that fills as the user scrolls through an article.
+
+   HTML:
+     <!-- Place near <body> open — before page content -->
+     <div class="reading-bar" id="reading-bar" role="presentation" aria-hidden="true"></div>
+
+   JS:
+     const bar = document.getElementById('reading-bar');
+     document.addEventListener('scroll', () => {
+       const doc = document.documentElement;
+       const pct = doc.scrollTop / (doc.scrollHeight - doc.clientHeight);
+       bar.style.setProperty('--reading-progress', `${Math.min(pct * 100, 100)}%`);
+     }, { passive: true });
+   ========================================================================== */
+
+@layer ds {
+
+.reading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--reading-progress, 0%);
+  height: 2px;
+  background-color: var(--color-primary);
+  z-index: var(--z-sticky);
+  pointer-events: none;
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   skeleton.css — Personal Design System
+   Requires: tokens.css
+
+   Loading placeholders. Prefer skeletons over centered spinners — they
+   preserve layout and give users a sense of what's arriving.
+
+   HTML (preset shapes):
+     <span class="skeleton skeleton-text" style="width: 60%"></span>
+     <span class="skeleton skeleton-text" style="width: 80%"></span>
+     <span class="skeleton skeleton-text" style="width: 45%"></span>
+
+     <span class="skeleton skeleton-heading" style="width: 40%"></span>
+     <span class="skeleton skeleton-avatar"></span>
+     <span class="skeleton skeleton-btn"></span>
+
+   HTML (arbitrary size — set width + height inline):
+     <span class="skeleton" style="width: 100%; height: 120px; border-radius: var(--radius-lg)"></span>
+
+   HTML (paragraph group):
+     <div class="skeleton-para">
+       <span class="skeleton skeleton-text"></span>
+       <span class="skeleton skeleton-text"></span>
+       <span class="skeleton skeleton-text"></span>
+     </div>
+   ========================================================================== */
+
+@layer ds {
+
+/* Shimmer sweep color — token defined here, follows theme */
+:root {
+  --skeleton-shimmer: oklch(1.000 0.000 0 / 0.55);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --skeleton-shimmer: oklch(1.000 0.000 0 / 0.055);
+  }
+}
+
+:root[data-theme="dark"] {
+  --skeleton-shimmer: oklch(1.000 0.000 0 / 0.055);
+}
+
+/* Base — apply to any block; set width + height on the element */
+.skeleton {
+  display: block;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer sweep */
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--skeleton-shimmer) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: skeleton-sweep 1.6s ease-in-out infinite;
+}
+
+@keyframes skeleton-sweep {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(200%); }
+}
+
+/* No shimmer when motion is reduced — static muted block is enough */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    display: none;
+  }
+}
+
+/* Preset shapes */
+.skeleton-text {
+  width: 100%;
+  height: 0.875em; /* text-sm line height */
+}
+
+.skeleton-heading {
+  width: 100%;
+  height: 1.25em;
+}
+
+.skeleton-avatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.skeleton-btn {
+  width: 5.5rem;
+  height: 2rem;
+  border-radius: var(--radius-md);
+}
+
+/* Paragraph group — stacked text lines; last line shorter for natural feel */
+.skeleton-para {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.skeleton-para .skeleton-text:last-child {
+  width: 65%;
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   stat-list.css — Personal Design System
+   Requires: tokens.css
+
+   Compact key-value pair list for inline data breakdowns.
+   Use inside .tile or .card for widget-style stats; use .stat-list--ruled
+   for standalone lists with row dividers (referrer tables, country lists).
+
+   HTML (compact — inside a tile):
+     <dl class="stat-list">
+       <div class="stat-row">
+         <dt class="stat-label">CPU</dt>
+         <dd class="stat-value">42%</dd>
+       </div>
+       <div class="stat-row">
+         <dt class="stat-label">MEM</dt>
+         <dd class="stat-value stat-value--warn">91%</dd>
+       </div>
+     </dl>
+
+   HTML (ruled — standalone list):
+     <dl class="stat-list stat-list--ruled">
+       <div class="stat-row">
+         <dt class="stat-label">github.com</dt>
+         <dd class="stat-value">142</dd>
+       </div>
+     </dl>
+   ========================================================================== */
+
+@layer ds {
+
+.stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+/* ── Ruled variant — dividers between rows ─────────────────────────── */
+
+.stat-list--ruled .stat-row {
+  padding-block: var(--space-1-5);
+  border-bottom: 1px solid var(--color-border);
+  gap: var(--space-4);
+}
+
+.stat-list--ruled .stat-row:last-child {
+  border-bottom: none;
+}
+
+/* ── Label ─────────────────────────────────────────────────────────── */
+
+.stat-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-muted);
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Value ─────────────────────────────────────────────────────────── */
+
+.stat-value {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* State: value is out of healthy range */
+.stat-value--warn {
+  color: var(--color-danger);
+}
+
+/* State: value is secondary / not yet meaningful (e.g. "Never", "—") */
+.stat-value--muted {
+  color: var(--color-muted);
+  font-weight: var(--weight-regular);
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   theme-toggle.css — Personal Design System
+   Requires: tokens.css
+
+   Pairs with the data-theme pattern in tokens.css.
+
+   JS pattern:
+     const next = document.documentElement.getAttribute('data-theme') === 'dark'
+       ? 'light' : 'dark';
+     document.documentElement.setAttribute('data-theme', next);
+     localStorage.setItem('theme', next);
+
+   HTML:
+     <button class="theme-btn" id="theme-toggle" aria-label="Switch to dark mode">
+       <!-- sun/moon SVG icons -->
+     </button>
+   ========================================================================== */
+
+@layer ds {
+
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-muted);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color            var(--duration-fast) var(--ease-out-quart),
+    background-color var(--duration-fast) var(--ease-out-quart);
+
+  /* Mobile: full touch target */
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@media (min-width: 768px) {
+  .theme-btn {
+    min-width: 28px;
+    min-height: 28px;
+  }
+}
+
+.theme-btn:hover {
+  color: var(--color-ink);
+  background-color: var(--color-surface);
+}
+
+.theme-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   tile.css — Personal Design System
+   Requires: tokens.css
+
+   Compact surface for dense grid layouts. Use .tile for read-only containers
+   and .tile-link directly on <a> or <button> for fully-clickable tiles.
+   For spacious containers (login panels, settings sections) use .card instead.
+
+   HTML (data tile):
+     <div class="tile">
+       <span class="tile-label">CPU</span>
+       <span class="metric metric-sm">42<span class="metric-unit">%</span></span>
+     </div>
+
+   HTML (link tile):
+     <a class="tile-link" href="/app">
+       <span class="tile-label">Forgejo</span>
+     </a>
+
+   HTML (tile grid):
+     <div class="tile-grid">
+       <div class="tile">…</div>
+       <a class="tile-link" href="…">…</a>
+     </div>
+   ========================================================================== */
+
+@layer ds {
+
+/* ── Passive tile ──────────────────────────────────────────────────── */
+
+.tile {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  /* Equal-height rule: cards sharing a row are always the same height.
+     min-height:100% fills the grid/flex cell — and crucially fills a wrapper
+     (e.g. <li>) sitting between the grid and the tile, which container-level
+     stretch does not reach. min-height (not height) is deliberate: it leaves
+     `height: auto` intact, so flex/grid `align-items: stretch` still applies,
+     and it's harmlessly ignored against an indefinite parent (standalone tile
+     in normal flow is unaffected). */
+  min-height: 100%;
+}
+
+/* ── Interactive tile — use on <a> or <button> ─────────────────────── */
+
+.tile-link {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  /* Equal-height rule (see .tile) folded into the 44px touch target:
+     at least 44px tall, and at least the full cell/wrapper height in a row. */
+  min-height: max(44px, 100%);
+  transition:
+    background-color var(--duration-base) var(--ease-out-quart),
+    border-color     var(--duration-base) var(--ease-out-quart);
+}
+
+.tile-link:hover {
+  background-color: var(--color-primary-bg);
+  border-color: var(--color-primary-bg-hover);
+}
+
+.tile-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ── Tile label — small descriptor above or beside the main value ──── */
+
+.tile-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-muted);
+  letter-spacing: var(--tracking-wide);
+}
+
+/* When the label is a direct child of tile-link (bookmark tiles), it IS
+   the primary content — not a secondary descriptor. Render it legibly. */
+.tile-link > .tile-label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink);
+  letter-spacing: var(--tracking-normal);
+}
+
+/* ── Tile grid — auto-reflow without breakpoints ───────────────────── */
+
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-3);
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   timeline.css — Personal Design System
+   Requires: tokens.css
+
+   Chronological entries for resume work experience, education, and projects.
+   No decorative dots or side connectors — the date column provides structure.
+
+   HTML:
+     <dl class="timeline">
+
+       <!-- Work or education entry -->
+       <div class="timeline-entry">
+         <dt class="timeline-period">2023–present</dt>
+         <dd class="timeline-body">
+           <span class="timeline-org">Company or Institution</span>
+           <span class="timeline-role">Job Title or Degree</span>
+           <p class="timeline-desc">
+             Brief description of responsibilities, achievements, or focus.
+           </p>
+         </dd>
+       </div>
+
+       <!-- Entry with bullet list instead of paragraph -->
+       <div class="timeline-entry">
+         <dt class="timeline-period">2020–2023</dt>
+         <dd class="timeline-body">
+           <span class="timeline-org">Previous Company</span>
+           <span class="timeline-role">Engineer</span>
+           <ul class="timeline-desc">
+             <li>Shipped a feature that reduced latency by 40%.</li>
+             <li>Migrated a monolith to services.</li>
+           </ul>
+         </dd>
+       </div>
+
+     </dl>
+
+   Note: the current role on a live resume is visually identical to past roles.
+   To highlight the current position, add a project-level modifier or apply
+   color: var(--color-primary) to that specific .timeline-role via inline style.
+   ========================================================================== */
+
+@layer ds {
+
+/* Reset dl defaults */
+.timeline {
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Entry ───────────────────────────────────────────────────────── */
+
+.timeline-entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.timeline-entry + .timeline-entry {
+  padding-top: var(--space-6);
+}
+
+.timeline-entry:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Desktop: side-by-side — period left, body right */
+@media (min-width: 640px) {
+  .timeline-entry {
+    flex-direction: row;
+    gap: var(--space-8);
+  }
+}
+
+/* ── Period (date range) ─────────────────────────────────────────── */
+
+.timeline-period {
+  /* Reset dt defaults */
+  margin: 0;
+  padding: 0;
+
+  font-size: var(--text-sm);
+  font-weight: var(--weight-light);
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  line-height: var(--leading-normal);
+  padding-top: 0.2em;  /* baseline-align with .timeline-org */
+}
+
+@media (min-width: 640px) {
+  .timeline-period {
+    flex-shrink: 0;
+    width: 9rem;
+    text-align: right;
+  }
+}
+
+/* ── Body (org + role + desc) ────────────────────────────────────── */
+
+.timeline-body {
+  /* Reset dd defaults */
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Organisation / institution name */
+.timeline-org {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink);
+  line-height: var(--leading-normal);
+}
+
+/* Job title or degree */
+.timeline-role {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-muted);
+  line-height: var(--leading-normal);
+  margin-top: var(--space-0-5);
+}
+
+/* Description — paragraph or list */
+.timeline-desc {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  line-height: var(--leading-relaxed);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  max-width: 65ch;
+}
+
+/* List form */
+ul.timeline-desc {
+  padding-left: var(--space-4);
+}
+
+ul.timeline-desc li + li {
+  margin-top: var(--space-1);
+}
+
+} /* @layer ds */
+/* ==========================================================================
+   toast.css — Personal Design System
+   Requires: tokens.css
+
+   Async notifications — use for errors and status updates that surface
+   after an action completes, not for inline form validation.
+
+   HTML:
+     <div class="toast-region" aria-live="polite" aria-label="Notifications">
+       <div class="toast" role="status">
+         <div class="toast-body">
+           <p class="toast-title">Changes saved</p>
+         </div>
+         <button class="toast-close" aria-label="Dismiss" onclick="dismiss(this)">
+           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+             <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+           </svg>
+         </button>
+       </div>
+
+       <!-- Error toast -->
+       <div class="toast toast-danger" role="alert">
+         <div class="toast-body">
+           <p class="toast-title">Failed to save</p>
+           <p class="toast-desc">Check your connection and try again.</p>
+         </div>
+         <button class="toast-close" aria-label="Dismiss" onclick="dismiss(this)">
+           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+             <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+           </svg>
+         </button>
+       </div>
+     </div>
+
+   ARIA guidance:
+     - Use aria-live="polite" on .toast-region for non-urgent updates.
+     - Use aria-live="assertive" when every toast is a critical error.
+     - Use role="status" on informational toasts, role="alert" on errors.
+
+   Dismissal (minimal JS):
+     function dismiss(closeBtn) {
+       const toast = closeBtn.closest('.toast');
+       toast.classList.add('toast--dismissing');
+       toast.addEventListener('animationend', () => toast.remove(), { once: true });
+     }
+   ========================================================================== */
+
+@layer ds {
+
+/* Region — fixed anchor at bottom-right; stacks toasts vertically */
+.toast-region {
+  position: fixed;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  left: var(--space-4);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  pointer-events: none; /* let clicks fall through empty space */
+}
+
+/* On tablet+, pin to right edge at a comfortable fixed width */
+@media (min-width: 640px) {
+  .toast-region {
+    left: auto;
+    width: 22rem;
+  }
+}
+
+/* Toast — default: neutral (info/success confirmations) */
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  box-shadow: var(--shadow-overlay);
+  pointer-events: auto;
+  animation: toast-in var(--duration-slow) var(--ease-out-expo) both;
+}
+
+/* Error variant */
+.toast-danger {
+  background-color: var(--color-danger-bg);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* Body — fills remaining width */
+.toast-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-title {
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
+.toast-desc {
+  margin-top: var(--space-0-5);
+  font-weight: var(--weight-light);
+  color: var(--color-muted);
+  line-height: var(--leading-normal);
+}
+
+.toast-danger .toast-desc {
+  color: var(--color-danger);
+  opacity: 0.8;
+}
+
+/* Close button */
+.toast-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.5;
+  transition: opacity var(--duration-fast) var(--ease-out-quart);
+}
+
+.toast-close:hover {
+  opacity: 1;
+}
+
+.toast-close:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+/* Enter animation */
+@keyframes toast-in {
+  from {
+    transform: translateY(0.375rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Dismiss animation — add .toast--dismissing via JS before removing */
+.toast--dismissing {
+  animation: toast-out var(--duration-base) var(--ease-standard) both;
+}
+
+@keyframes toast-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(0.25rem);
+    opacity: 0;
+  }
+}
+
+/* Reduced motion: no slide; just crossfade */
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: toast-in-fade var(--duration-base) linear both;
+  }
+
+  .toast--dismissing {
+    animation: toast-out-fade var(--duration-fast) linear both;
+  }
+}
+
+@keyframes toast-in-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes toast-out-fade {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+} /* @layer ds */

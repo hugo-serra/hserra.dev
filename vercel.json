@@ -1,6 +1,5 @@
 {
   "framework": "astro",
   "buildCommand": "rm -rf .astro node_modules/.astro && bun run build",
-  "outputDirectory": "dist",
-  "installCommand": "bash scripts/vercel-install.sh"
+  "outputDirectory": "dist"
 }

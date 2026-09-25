@@ -9,21 +9,11 @@ Personal website and blog. Built with Astro, styled with the `@hs/design` design
 - **Blog spec:** `projects/2026-03-31_blog.md`
 - **Resume spec:** `projects/2026-03-31_resume.md`
 
-## Vercel deploy — SSH key setup (one-time)
+## Deploy path
 
-`@hs/design` is installed via SSH (`git+ssh://git@github.com:hugo-serra/design.git`). `vercel.json` provides a custom install command that sets up the key before `bun install`. To activate it:
+Forgejo is the primary repository (`ssh://forgejo@git.home/hserra/hserra.dev.git`). Its push mirror copies every push to GitHub, and Vercel builds from GitHub: pushing to Forgejo `main` deploys production, and any other branch gets a Vercel preview. Push to Forgejo, never to GitHub directly. The site stays on Vercel; it is not served from the homelab (decided 2026-09-25, hserra/hserra.dev#2).
 
-1. Generate a deploy key (or reuse an existing ed25519 key):
-   ```bash
-   ssh-keygen -t ed25519 -f design-deploy-key -N ""
-   ```
-2. Add `design-deploy-key.pub` as a **Deploy key** (read-only) on the `hugo-serra/design` GitHub repo → Settings → Deploy keys.
-3. In Vercel → Project → Settings → Environment Variables, add:
-   - **Name:** `DESIGN_SSH_KEY`
-   - **Value:** the full content of `design-deploy-key` (private key, including `-----BEGIN` / `-----END` lines)
-   - Environments: Production, Preview, Development
-
-The `vercel.json` install command writes this key to `~/.ssh/id_ed25519` at build time and adds `github.com` to `known_hosts` before running `bun install`.
+The Vercel build needs no secrets and no access to `git.home`: the design system is vendored (below), so `bun install` fetches only public packages.
 
 ## Design system
 
@@ -33,20 +23,11 @@ The `vercel.json` install command writes this key to `~/.ssh/id_ed25519` at buil
 - `/Users/hserra/projects/personal/design/DESIGN.md` — tokens, color rules, typography, elevation, do's and don'ts
 - `/Users/hserra/projects/personal/design/IMPLEMENTATION.md` — canonical component reference (HTML patterns, modifiers, token table)
 
-The DS is installed as an npm package (`@hs/design`). Import in the global stylesheet:
+The DS is **vendored**, not installed: `src/styles/vendor/hs-design.css` is a committed, single-file copy that `src/styles/base.css` imports. The committed file is the pin, and Vercel builds from it.
 
-```css
-@import "@hs/design";
-```
-
-Or granularly:
-
-```css
-@import "@hs/design/tokens";
-@import "@hs/design/base";
-@import "@hs/design/components/button";
-/* … */
-```
+- **Change version deliberately:** `scripts/vendor-design.sh <tag>` (needs SSH access to `git.home`, so run it on the Mac), then review the diff and the rendered site, and commit. The file's first line records the source tag and commit.
+- **Never edit `src/styles/vendor/hs-design.css` by hand**, and never add `@hs/design` back to `package.json`: Vercel cannot reach `git.home`.
+- **Today's vendored version is old** (`5952170`, just after `v0.2.0`). The DS docs above describe the current release, so a class they mention may not exist in the vendored copy yet; check the file before relying on one.
 
 Available components: `button`, `badge`, `field`, `gallery`, `lightbox`, `table`, `alert`, `card`, `empty`, `metric`, `nav`, `post-list`, `prose`, `reading-bar`, `skeleton`, `stat-list`, `theme-toggle`, `tile`, `timeline`, `toast`.
 
