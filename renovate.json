@@ -1,0 +1,8 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Security fixes only. Routine updates stay manual; Renovate opens a PR only when OSV reports a vulnerability in a direct dependency.",
+  "extends": [
+    "security:only-security-updates"
+  ],
+  "timezone": "Europe/Lisbon"
+}
